@@ -31,7 +31,7 @@ def main():
       i = line.find(CIMSOR[0])
       if i > -1:
         j = line.find(CIMSOR[1],i) + len(CIMSOR[1])
-        line = line[:i]+ "<h1>CCC</h1>" + line[i:]
+        line = line[:i]+ "<h1>--=CÍM=--</h1>" + line[i:]
       print("{0}".format(line), end="")
 
 if __name__ == '__main__':
