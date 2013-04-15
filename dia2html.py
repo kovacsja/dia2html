@@ -8,7 +8,8 @@ A .html-ként mentett könyvből kivágja a szövegközi oldalszámozást,
 """
 
 import sys
-import datetime 
+import datetime
+import optparse
 
 TORLES = (("<span class=\"old","/span>"),
           ("<a name=", "rect\"/>"))
