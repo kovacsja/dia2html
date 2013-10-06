@@ -9,16 +9,20 @@ A .html-ként mentett könyvből kivágja a szövegközi oldalszámozást,
 
 import sys
 import datetime
-import optparse
+import argparse
+
+parser = argparse.ArgumentParser(description="opciók beállítása")
+parser.add_argument("-o", dest="oldalmark", action="store_const", const="[brake]", default = "", help="a beépített oldalszámok eredeti helyét jelöli (ha nem adod meg, akkor semmilyen jelölést nem fog használni)")
+parser.add_argument("input", metavar="S", type=str, help="a feldolgozandó file neve")
 
 TORLES = (("<span class=\"old","/span>"),
           ("<a name=", "rect\"/>"))
 CSERE = ("<div class=\"szeparator\"> </div>", "<p>*</p>")
 CIMSOR = ("<div class=\"cim\">", "rect\">")
-OLDALMARK ="" #"<+>"
+OLDALMARK = parser.parse_args().oldalmark
 
-def main():    
-  with open(sys.argv[1]) as file:
+def main():
+  with open(parser.parse_args().input) as file:
     for line in file:   
       #markerek törlése
       for t in TORLES:
@@ -32,7 +36,7 @@ def main():
       i = line.find(CIMSOR[0])
       if i > -1:
         j = line.find(CIMSOR[1],i) + len(CIMSOR[1])
-        line = line[:i]+ "<h1>--=CÍM=--</h1>" + line[i:]
+        line = line[:i]+ "<h1>--=CIM=--</h1>" + line[i:]
       print("{0}".format(line), end="")
 
 if __name__ == '__main__':
