@@ -1,6 +1,7 @@
-this is my first python project
+#this is my first python project
 
-to do:
--------
-write help
-adding option parser
+##to do:
++ help megírása
++ option parser kibővítése
++ fájlbaírása finomítása
+
