@@ -23,13 +23,13 @@ OLDALMARK = parser.parse_args().oldalmark
 
 f_name = parser.parse_args().input
 stamp = dt.datetime.today()
-w_name = f_name + str(stamp.isoformat(sep="-")[:-4])
+w_name = f_name + "_" + stamp.isoformat(sep="-")[:-6]
 
 
 def main():
   try:
     with open(f_name) as file:
-      with open("f_name_tmp.html", "w") as file_w:
+      with open(w_name, "w") as file_w:
         for line in file:
           #markerek törlése
           for t in TORLES:
@@ -48,7 +48,7 @@ def main():
           #print("{0}".format(line), end="")
           file_w.write(line)
   finally:
-    print(f_name)
+    print(w_name)
 
 
 if __name__ == '__main__':
