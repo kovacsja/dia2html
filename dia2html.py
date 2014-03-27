@@ -23,7 +23,7 @@ OLDALMARK = parser.parse_args().oldalmark
 
 f_name = parser.parse_args().input
 stamp = dt.datetime.today()
-w_name = f_name + "_" + stamp.isoformat(sep="-")[:-6]
+w_name = f_name + "_" + stamp.isoformat(sep="-")[:-6] + ".html"
 
 
 def main():
