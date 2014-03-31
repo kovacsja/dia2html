@@ -10,23 +10,31 @@ A .html-ként mentett könyvből kivágja a szövegközi oldalszámozást,
 import datetime as dt
 import argparse
 
-parser = argparse.ArgumentParser(description="opciók beállítása")
-parser.add_argument("-o", dest="oldalmark", action="store_const", const="[brake]", default="",
-                    help="a beépített oldalszámok eredeti helyét jelöli (ha nem adod meg, akkor semmilyen jelölést nem fog használni)")
-parser.add_argument("input", metavar="S", type=str, help="a feldolgozandó file neve")
+parser = argparse.ArgumentParser(description="get rid of some stuff")
+parser.add_argument("--törés", dest="oldalmark", action="store_const", const="[brake]", default="",
+                    help="a beépített oldalszámok eredeti helyét jelöli")
+parser.add_argument("input", help="a feldolgozandó fájl neve")
+parser.add_argument("--output", dest = "output", help="az eredmény fájl neve")
+
+args = parser.parse_args()
 
 TORLES = (("<span class=\"old", "/span>"),
           ("<a name=", "rect\"/>"))
 CSERE = ("<div class=\"szeparator\"> </div>", "<p>*</p>")
 CIMSOR = ("<div class=\"cim\">", "rect\">")
-OLDALMARK = parser.parse_args().oldalmark
+OLDALMARK = args.oldalmark
 
-f_name = parser.parse_args().input
+f_name = args.input
 stamp = dt.datetime.today()
-w_name = f_name + "_" + stamp.isoformat(sep="-")[:-6] + ".html"
 
 
 def main():
+  if args.output:
+    w_name = args.output
+  else:
+    w_name = f_name + "_" + stamp.isoformat(sep="-")[:-6] + ".html"
+
+
   try:
     with open(f_name) as file:
       with open(w_name, "w") as file_w:
