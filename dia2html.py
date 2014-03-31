@@ -7,38 +7,57 @@ A .html-ként mentett könyvből kivágja a szövegközi oldalszámozást,
 és jelöli a címsorok helyét a formázás megkönnyítésére. 
 """
 
-import sys
-import datetime
+import datetime as dt
 import argparse
 
-parser = argparse.ArgumentParser(description="opciók beállítása")
-parser.add_argument("-o", dest="oldalmark", action="store_const", const="[brake]", default = "", help="a beépített oldalszámok eredeti helyét jelöli (ha nem adod meg, akkor semmilyen jelölést nem fog használni)")
-parser.add_argument("input", metavar="S", type=str, help="a feldolgozandó file neve")
+parser = argparse.ArgumentParser(description="get rid of some stuff")
+parser.add_argument("--brake", dest="oldalmark", action="store_const", const="[brake]", default="",
+                    help="a beépített oldalszámok eredeti helyét jelöli [brake] szöveggel")
+parser.add_argument("input", help="a feldolgozandó fájl neve")
+parser.add_argument("--output", help="az eredmény fájl neve")
 
-TORLES = (("<span class=\"old","/span>"),
+args = parser.parse_args()
+
+TORLES = (("<span class=\"old", "/span>"),
           ("<a name=", "rect\"/>"))
 CSERE = ("<div class=\"szeparator\"> </div>", "<p>*</p>")
 CIMSOR = ("<div class=\"cim\">", "rect\">")
-OLDALMARK = parser.parse_args().oldalmark
+OLDALMARK = args.oldalmark
+
+f_name = args.input
+stamp = dt.datetime.today()
+
 
 def main():
-  with open(parser.parse_args().input) as file:
-    for line in file:   
-      #markerek törlése
-      for t in TORLES:
-        i = line.find(t[0])
-        if i > -1:
-          j = line.find(t[1],i) + len(t[1])
-          line = line[:i]+line[j:]+OLDALMARK
-      #csere
-      line = line.replace(CSERE[0],CSERE[1])
-      #címsorok jelölése
-      i = line.find(CIMSOR[0])
-      if i > -1:
-        j = line.find(CIMSOR[1],i) + len(CIMSOR[1])
-        line = line[:i]+ "<h1>--=CIM=--</h1>" + line[i:]
-      print("{0}".format(line), end="")
+  if args.output:
+    w_name = args.output
+  else:
+    w_name = f_name + "_" + stamp.isoformat(sep="-")[:-6] + ".html"
+
+  try:
+    with open(f_name) as file:
+      with open(w_name, "w") as file_w:
+        for line in file:
+          #markerek törlése
+          for t in TORLES:
+            i = line.find(t[0])
+            if i > -1:
+              j = line.find(t[1], i) + len(t[1])
+              line = line[:i] + line[j:] + OLDALMARK
+          #csere
+          line = line.replace(CSERE[0], CSERE[1])
+          #címsorok jelölése
+          i = line.find(CIMSOR[0])
+          if i > -1:
+            j = line.find(CIMSOR[1], i) + len(CIMSOR[1])
+            line = line[:i] + "<h1>--=CIM=--</h1>" + line[i:]
+          #sorok kiírása új fájlba
+          #print("{0}".format(line), end="")
+          file_w.write(line)
+  finally:
+    print(w_name)
+
 
 if __name__ == '__main__':
-	main()
+  main()
 
