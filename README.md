@@ -4,4 +4,6 @@
 + help megírása
 + option parser kibővítése
 + fájlbaírása finomítása
++ előnézet funkcició
++ bemeneti fájl vizsgálata
 
