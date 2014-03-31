@@ -16,6 +16,7 @@ parser.add_argument("--törés", dest="oldalmark", action="store_const", const="
 parser.add_argument("input", help="a feldolgozandó fájl neve")
 parser.add_argument("--output", dest = "output", help="az eredmény fájl neve")
 
+
 args = parser.parse_args()
 
 TORLES = (("<span class=\"old", "/span>"),
