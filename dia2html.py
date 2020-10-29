@@ -10,23 +10,33 @@ import datetime as dt
 import argparse
 
 parser = argparse.ArgumentParser(description="opciók beállítása")
-parser.add_argument("-o", dest="oldalmark", action="store_const", const="[brake]", default="",
-                    help="a beépített oldalszámok eredeti helyét jelöli (ha nem adod meg, akkor semmilyen jelölést nem fog használni)")
 parser.add_argument(
-    "input", metavar="S", type=str, help="a feldolgozandó file neve")
+    "-o",
+    dest="oldalmark",
+    action="store_const",
+    const="[brake]",
+    default="",
+    help="a beépített oldalszámok eredeti helyét jelöli (ha nem adod meg, akkor semmilyen jelölést nem fog használni)",
+)
+parser.add_argument("input", metavar="S", type=str, help="a feldolgozandó file neve")
 
 parser = argparse.ArgumentParser(description="get rid of some stuff")
-parser.add_argument("--brake", dest="oldalmark", action="store_const",
-                    const="[brake]", default="", help="a beépített oldalszámok eredeti helyét jelöli [brake] szöveggel")
+parser.add_argument(
+    "--brake",
+    dest="oldalmark",
+    action="store_const",
+    const="[brake]",
+    default="",
+    help="a beépített oldalszámok eredeti helyét jelöli [brake] szöveggel",
+)
 parser.add_argument("input", help="a feldolgozandó fájl neve")
 parser.add_argument("--output", help="az eredmény fájl neve")
 
 args = parser.parse_args()
 
-TORLES = (("<span class=\"old", "/span>"),
-          ("<a name=", "rect\"/>"))
-CSERE = ("<div class=\"szeparator\"> </div>", "<p>*</p>")
-CIMSOR = ("<div class=\"cim\">", "rect\">")
+TORLES = (('<span class="old', "/span>"), ("<a name=", 'rect"/>'))
+CSERE = ('<div class="szeparator"> </div>', "<p>*</p>")
+CIMSOR = ('<div class="cim">', 'rect">')
 OLDALMARK = args.oldalmark
 
 f_name = args.input
@@ -37,8 +47,7 @@ def main():
     if args.output:
         w_name = args.output
     else:
-        w_name = f_name.split(
-            ".")[0] + "_" + stamp.isoformat(sep="-")[:-7] + ".html"
+        w_name = f_name.split(".")[0] + "_" + stamp.isoformat(sep="-")[:-7] + ".html"
 
     try:
         with open(f_name) as file:
@@ -53,6 +62,7 @@ def main():
                     # csere
                     line = line.replace(CSERE[0], CSERE[1])
                     # címsorok jelölése
+                    # TODO: taggel körbevenni a szöveget
                     i = line.find(CIMSOR[0])
                     if i > -1:
                         j = line.find(CIMSOR[1], i) + len(CIMSOR[1])
@@ -64,5 +74,5 @@ def main():
         print(w_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
